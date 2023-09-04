@@ -10,9 +10,8 @@ class LoginViewModel extends GetxController {
   login(String u, String p, BuildContext context) async {
     UserCredential? user = await fireBaseApi.signInWithEmailAndPassword(u, p);
     if (user != null) {
-      print(user);
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+          .push(MaterialPageRoute(builder: (context) => HomeScreen(),settings: RouteSettings(arguments: user.user?.uid)));
     }
   }
 }

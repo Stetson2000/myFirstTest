@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:map_exam/screens/homepage/home_viewmodel.dart';
+import 'package:map_exam/screens/homepage/widgets/notecard.dart';
 
 class HomeScreen extends StatelessWidget {
   static Route route() => MaterialPageRoute(builder: (_) => const HomeScreen());
@@ -6,73 +9,50 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Notes'),
-        actions: [
-          CircleAvatar(
-            backgroundColor: Colors.blue.shade200,
-            child: const Text(
-              '4',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+    return GetBuilder<HomePageViewModel>(
+        init: HomePageViewModel(
+            (ModalRoute.of(context)!.settings.arguments as String)),
+        builder: (viewmodel) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('My Notes'),
+              actions: [
+                CircleAvatar(
+                  backgroundColor: Colors.blue.shade200,
+                  child: Text(
+                    viewmodel.notedLength.toString(),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+              ],
             ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
-      ),
-      body: ListView.separated(
-        itemCount: 4,
-        separatorBuilder: (context, index) => const Divider(
-          color: Colors.blueGrey,
-        ),
-        itemBuilder: (context, index) => ListTile(
-          trailing: SizedBox(
-            width: 110.0,
-            child: Row(
+            body: Column(
+                children:
+                    (viewmodel.notes?.map((e) => NoteCard(e)).toList()) ?? []),
+            floatingActionButton: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.blue,
-                  ),
+                FloatingActionButton(
+                    heroTag: '1',
+                    child: const Icon(Icons.menu),
+                    tooltip: 'Show less. Hide notes content',
+                    onPressed: () {}),
+
+                /* Notes: for the "Show More" icon use: Icons.menu */
+
+                FloatingActionButton(
+                  heroTag: '2',
+                  child: const Icon(Icons.add),
+                  tooltip: 'Add a new note',
                   onPressed: () {},
                 ),
               ],
             ),
-          ),
-          title: const Text('Note title'),
-          subtitle: const Text('Note content'),
-          onTap: () {},
-          onLongPress: () {},
-        ),
-      ),
-      floatingActionButton: Row(
-        
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            heroTag: '1',
-              child: const Icon(Icons.menu),
-              tooltip: 'Show less. Hide notes content',
-              onPressed: () {}),
-
-          /* Notes: for the "Show More" icon use: Icons.menu */
-
-          FloatingActionButton(
-            heroTag: '2',
-            child: const Icon(Icons.add),
-            tooltip: 'Add a new note',
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 }
