@@ -8,7 +8,7 @@ class HomePageViewModel extends GetxController {
   FireBaseApi fireBaseApi = FireBaseApi();
 
   List<Note>? notes;
-
+  bool showNotes = true;
   @override
   void onInit() async {
     notes = (await fireBaseApi.loadUserNotes(uuid))!;
@@ -21,5 +21,10 @@ class HomePageViewModel extends GetxController {
     update();
   }
 
-  get notedLength => notes?.length?? 0;
+  toggleShowNotes() {
+    showNotes = !showNotes;
+    update();
+  }
+
+  get notedLength => notes?.length ?? 0;
 }

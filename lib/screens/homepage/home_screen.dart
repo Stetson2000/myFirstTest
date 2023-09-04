@@ -38,9 +38,10 @@ class HomeScreen extends StatelessWidget {
               children: [
                 FloatingActionButton(
                     heroTag: '1',
-                    child: const Icon(Icons.menu),
+                    child: Icon(
+                        (viewmodel.showNotes) ? Icons.unfold_less : Icons.menu),
                     tooltip: 'Show less. Hide notes content',
-                    onPressed: () {}),
+                    onPressed: () => viewmodel.toggleShowNotes()),
 
                 /* Notes: for the "Show More" icon use: Icons.menu */
 
