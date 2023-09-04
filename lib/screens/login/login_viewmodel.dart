@@ -8,7 +8,6 @@ class LoginViewModel extends GetxController {
   FireBaseApi fireBaseApi = FireBaseApi();
 
   login(String u, String p, BuildContext context) async {
-    // print('gege');
     UserCredential? user = await fireBaseApi.signInWithEmailAndPassword(u, p);
     if (user != null) {
       print(user);
