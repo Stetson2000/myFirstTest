@@ -39,4 +39,31 @@ class FireBaseApi {
   }
 
   authenticate(String u, String p) async {}
+
+  deleteNote(Note n) async {
+    try {
+      final query = await FirebaseFirestore.instance
+          .collection('notes')
+          .where('id', isEqualTo: n.id)
+          .where('title', isEqualTo: n.title)
+          .where('content', isEqualTo: n.content)
+          .get();
+      for (var doc in query.docs) {
+        await FirebaseFirestore.instance
+            .collection('notes')
+            .doc(doc.id)
+            .delete();
+      }
+      for (var doc in query.docs) {
+        await FirebaseFirestore.instance
+            .collection('notes')
+            .doc(doc.id)
+            .set(n.toJson());
+      }
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

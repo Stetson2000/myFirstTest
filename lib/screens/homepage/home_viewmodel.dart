@@ -18,21 +18,26 @@ class HomePageViewModel extends GetxController {
     super.onInit();
   }
 
+  get notedLength => notes?.length ?? 0;
+  
   selectNote(Note n) {
-    selectedNote = n;
+    isSelected(n) ? selectedNote = null : selectedNote = n;
     update();
   }
 
   isSelected(Note n) => selectedNote == n;
+
   loadUserNotes() async {
     notes = (await fireBaseApi.loadUserNotes(uuid))!;
     update();
   }
+
+  deleteNote(Note n) async =>
+      (await fireBaseApi.deleteNote(n) ? await loadUserNotes() : null);
 
   toggleShowNotes() {
     showNotes = !showNotes;
     update();
   }
 
-  get notedLength => notes?.length ?? 0;
 }
