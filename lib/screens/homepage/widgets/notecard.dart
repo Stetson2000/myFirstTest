@@ -13,23 +13,26 @@ class NoteCard extends StatelessWidget {
       return Column(
         children: [
           ListTile(
-            trailing: SizedBox(
-              width: 110.0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.blue),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.blue,
+            trailing: Visibility(
+              visible: viewmodel.isSelected(note),
+              child: SizedBox(
+                width: 110.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.edit, color: Colors.blue),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
-                  ),
-                ],
+                    IconButton(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.blue,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
               ),
             ),
             title: Text(note.title.toString()),
@@ -37,7 +40,7 @@ class NoteCard extends StatelessWidget {
                 visible: viewmodel.showNotes,
                 child: Text(note.content.toString())),
             onTap: () {},
-            onLongPress: () {},
+            onLongPress: () => viewmodel.selectNote(note),
           ),
           const Divider(color: Colors.blueGrey),
         ],

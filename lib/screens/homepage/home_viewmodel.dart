@@ -9,15 +9,23 @@ class HomePageViewModel extends GetxController {
 
   List<Note>? notes;
   bool showNotes = true;
+
+  Note? selectedNote;
+
   @override
   void onInit() async {
-    notes = (await fireBaseApi.loadUserNotes(uuid))!;
+    await loadUserNotes();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  selectNote(Note n) {
+    selectedNote = n;
+    update();
+  }
+
+  isSelected(Note n) => selectedNote == n;
+  loadUserNotes() async {
+    notes = (await fireBaseApi.loadUserNotes(uuid))!;
     update();
   }
 
