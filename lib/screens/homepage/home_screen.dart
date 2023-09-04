@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:map_exam/screens/edit/edit_screen.dart';
+import 'package:map_exam/screens/edit/edit_viewmodel.dart';
 import 'package:map_exam/screens/homepage/home_viewmodel.dart';
 import 'package:map_exam/screens/homepage/widgets/notecard.dart';
 
@@ -49,7 +51,10 @@ class HomeScreen extends StatelessWidget {
                   heroTag: '2',
                   child: const Icon(Icons.add),
                   tooltip: 'Add a new note',
-                  onPressed: () {},
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => EditScreen(),
+                      settings:
+                          RouteSettings(arguments: [null, NoteType.add]))),
                 ),
               ],
             ),

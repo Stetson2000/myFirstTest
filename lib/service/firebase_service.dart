@@ -28,11 +28,11 @@ class FireBaseApi {
           .collection('notes')
           .where('id', isEqualTo: uuid)
           .get();
-      List<Note> messages = [];
+      List<Note> notes = [];
       for (var docs in query.docs) {
-        messages.add(Note.fromJson(docs.data()));
+        notes.add(Note.fromJson(docs.data(), docs.id));
       }
-      return messages;
+      return notes;
     } catch (e) {
       return null;
     }
@@ -42,28 +42,36 @@ class FireBaseApi {
 
   deleteNote(Note n) async {
     try {
-      final query = await FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection('notes')
-          .where('id', isEqualTo: n.id)
-          .where('title', isEqualTo: n.title)
-          .where('content', isEqualTo: n.content)
-          .get();
-      for (var doc in query.docs) {
-        await FirebaseFirestore.instance
-            .collection('notes')
-            .doc(doc.id)
-            .delete();
-      }
-      for (var doc in query.docs) {
-        await FirebaseFirestore.instance
-            .collection('notes')
-            .doc(doc.id)
-            .set(n.toJson());
-      }
+          .doc(n.docId)
+          .delete();
       return true;
     } catch (e) {
       print(e);
       return false;
+    }
+  }
+
+  addNote(Note n) async {
+    try {
+      await FirebaseFirestore.instance.collection('notes').add(n.toJson());
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  updateNote(Note n) async {
+    try {
+      print(n.title);
+      print(n.docId);
+        await FirebaseFirestore.instance
+            .collection('notes')
+            .doc(n.docId)
+            .update(n.toJson());
+
+    } catch (e) {
+      print(e);
     }
   }
 }
